@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>学校管理系统----管理员登录页面</title>
+    <!--css-->
+    <link rel="stylesheet" href="../js/layui/css/layui.css" />
+    <!--sms css-->
+    <link rel="stylesheet" href="../css/normal.css" />
+    <link rel="stylesheet" href="../css/login.css" />
+    <!--js-->
+    <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="../js/layer/layer.js"></script>
+    <script type="text/javascript" src="../js/vue.min.js"></script>
+    <script type="text/javascript" src="../js/layui/layui.js"></script>
+    <!--sms js-->
+    <script type="text/javascript" src="../js/admin.js"></script>
+    <script type="text/javascript" src="../js/login.js"></script>
+</head>
+
+<body>
+    <div class="login" id="Admin">
+        <p>
+            <label class="login-label">账户:</label><input class="admin-login" id="name" name="name" type="text" />
+            <input v-model="name" v-show="false" />
+        </p>
+        <p>
+            <label class="login-label">密码:</label><input class="admin-login" id="pwd" name="pwd" type="password" />
+        </p>
+        <p>
+            <label class="login-label">验证码:</label><input class="admin-login" id="code" name="code" type="text" />
+            <img id="valid-code-img" src="/SchoolManagementSystem/securitycode" />
+        </p>
+        <p>
+            <button class="layui-btn layui-btn-primary layui-btn-sm confirm" id="confirm">登录</button>
+            <button class="layui-btn layui-btn-danger layui-btn-sm quit" id="quit">取消</button>
+        </p>
+    </div>
+    <!--sms js-->
+    <script type="text/javascript" src="../js/admin.js"></script>
+
+    <div class="footer">
+        <div class="footer-ad" align="center">
+            <div class="copyright">Copyright © 2017 学校管理系统--by Unicorn</div>
+        </div>
+    </div>
+</body>
+
+</html>

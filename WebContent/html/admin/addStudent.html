@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>学校管理系统----添加学生信息</title>
+    <!--css-->
+    <link rel="stylesheet" href="../js/layui/css/layui.css" />
+    <!--sms css-->
+    <link rel="stylesheet" href="../css/normal.css" />
+    <link rel="stylesheet" href="../css/addStudent.css" />
+    <!--js-->
+    <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+    <!--顺序问题会导致错误-->
+    <script type="text/javascript" src="../js/layer/layer.js"></script>
+    <script type="text/javascript" src="../js/vue.min.js"></script>
+    <script type="text/javascript" src="../js/layui/layui.js"></script>
+    <!--sms js-->
+    <script type="text/javascript" src="../js/addStudent.js"></script>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">学校管理系统后台</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-right" id="Admin">
+                <li class="layui-nav-item">
+                    <a href="javascript:void(0);">Hello! {{name}}</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:void(0);" @click="logout">退出</a>
+                </li>
+            </ul>
+        </div>
+        <!--sms js-->
+        <script type="text/javascript" src="../js/admin.js"></script>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-this">
+                        <a href="javascript:void(0);">添加学生信息</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="stuTable.htm">学生信息列表</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+		<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+		<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	  <![endif]-->
+        <div class="layui-body">
+            <!-- 添加学生信息  -->
+            <div class="add-div">
+                <p>
+                    <label class="info-label">学号:</label><input class="info" id="stuNo" name="stuNo" type="text" placeholder="如:201648891225" />
+                </p>
+                <p>
+                    <label class="info-label">姓名:</label><input class="info" id="name" name="name" type="text" placeholder="中文名或英文名" />
+                </p>
+                <p>
+                    <label class="info-label">年龄:</label><input class="info" id="age" name="age" type="text" placeholder="如:19" />
+                </p>
+                <p>
+                    <label class="info-label">性别:</label>
+                    <input class="info" id="sex" name="sex" type="radio" value="0" checked="checked" /><label style="left: 140px; position: absolute;">男</label>
+                    <input class="info" id="sex" name="sex" type="radio" value="1" style="margin-left: 80px;" /><label style="left: 220px; position: absolute;">女</label>
+                </p>
+                <p>
+                    <label class="info-label">省:</label><input class="info" id="province" name="province" type="text" placeholder="如:广东" />
+                </p>
+                <p>
+                    <label class="info-label">市:</label><input class="info" id="city" name="city" type="text" placeholder="如:广州" />
+                </p>
+                <p>
+                    <label class="info-label">区/县:</label><input class="info" id="area" name="area" type="text" placeholder="如:番禺" />
+                </p>
+                <p>
+                    <label class="info-label">手机:</label><input class="info" id="phone" name="phone" type="text" placeholder="11位手机号" />
+                </p>
+                <p>
+                    <label class="info-label">邮箱:</label><input class="info" id="email" name="email" type="text" placeholder="xxx@xxx.xxx" />
+                </p>
+                <p>
+                    <label class="info-label">出生年月日:</label><input class="info" id="birthday" name="birthday" type="text" placeholder="1900-01-01(1900-1-1)" />
+                </p>
+                <p>
+                    <button class="layui-btn layui-btn-primary confirm" id="confirm">确认添加</button>
+                    <button class="layui-btn layui-btn-danger quit" id="quit">取消添加</button>
+                </p>
+            </div>
+        </div>
+
+        <div class="layui-footer">
+            Copyright © 2017 学校管理系统--by Unicorn
+        </div>
+    </div>
+    <script>
+        //JavaScript代码区域
+    </script>
+</body>
+
+</html>

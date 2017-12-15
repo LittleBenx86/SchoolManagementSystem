@@ -1,0 +1,44 @@
+/*div*/
+div.add-div{
+	margin: 0 auto;
+	padding: 0;
+}
+
+/*p*/
+p{
+	margin-top: 20px;
+}
+
+/*label*/
+label{
+	font-size: large;
+}
+
+/*input*/
+input.info{
+	left: 100px;
+	width: 260px;
+	line-height: 30px;
+	position: absolute;
+	font-size: large;
+}
+
+input.info#sex{
+	width: 50px;
+	vertical-align: middle;
+}
+
+/*button*/
+button.confirm{
+	left: 50px;
+	position: relative;
+}
+
+button.confirm:hover{
+	background-color: #5FB878;
+}
+
+button.quit{
+	left: 80px;
+	position: relative;
+}

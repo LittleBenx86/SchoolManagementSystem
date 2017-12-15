@@ -1,0 +1,33 @@
+/************表格样式的渲染***************/
+th{
+	align : center,;
+	border-right-style: groove;
+	border-right-width: 1px; 
+	border-color: black;
+}
+
+thead tr{
+	background-color: #F5FAFE;
+	height: 35px;
+}
+
+td{
+	text-align : center;
+	border-right-style: groove;
+	border-right-width: 1px; 
+	border-color: black;
+	font-size: large;
+}
+
+tbody tr{
+	line-height: 60px;
+}
+
+
+tr#update td{
+	text-align : center;
+	font-size: large;
+	border-right-width: 0; 
+}
+
+

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>学校管理系统----学生信息列表</title>
+    <!--css-->
+    <link rel="stylesheet" href="../js/layui/css/layui.css" />
+    <!--sms css-->
+    <link rel="stylesheet" href="../css/normal.css" />
+    <link rel="stylesheet" href="../css/stuTable.css" />
+    <link rel="stylesheet" href="../css/page.css" />
+    <!--js-->
+    <script type="text/javascript" src="../js/jquery-3.2.1.js"></script>
+    <!--顺序问题会导致错误-->
+    <script type="text/javascript" src="../js/layer/layer.js"></script>
+    <script type="text/javascript" src="../js/vue.min.js"></script>
+    <script type="text/javascript" src="../js/layui/layui.js"></script>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">学校管理系统后台</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-right" id="Admin">
+                <li class="layui-nav-item">
+                    <a href="javascript:void(0);">Hello! {{name}}</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:void(0);" @click="logout">退出</a>
+                </li>
+            </ul>
+        </div>
+        <!--sms js-->
+        <script type="text/javascript" src="../js/admin.js"></script>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item">
+                        <a href="addStu.htm">添加学生信息</a>
+                    </li>
+                    <li class="layui-nav-item  layui-this">
+                        <a href="javascript:void(0);">学生信息列表</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+		<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+		<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	  <![endif]-->
+        <div class="layui-body app" id="app">
+            <select v-model="selected" v-on:change="showConditionInput(selected)">
+	  		<option v-for="opt in opts" v-bind:value="opt.value">
+	  			{{opt.text}}
+	  		</option>
+	  	</select>
+            <select v-model="selectedSort">
+	  		<option v-for="s in sorts" v-bind:value="s.value">
+	  			{{s.text}}
+	  		</option>
+	  	</select>
+            <!-- 查询的输入框/选择框 -->
+            <input v-if="query" placeHolder="输入需要查询的关键字" id="conditionQuery" v-model="condition" />
+            <select v-model="selectedSex" v-if="seeSex">
+	  		<option v-for="sex in sexs" v-bind:value="sex.value">
+	  			{{sex.text}}
+	  		</option>
+	  	</select>
+            <input v-if="pca" placeHolder="输入需要查询的省份" id="provinceQuery" v-model="province" />
+            <input v-if="pca" placeHolder="输入需要查询的城市" id="cityQuery" v-model="city" />
+            <input v-if="pca" placeHolder="输入需要查询的区(县)" id="areaQuery" v-model="area" />
+            <!-- 查询按钮 -->
+            <button v-on:click="conditionQuery" class="layui-btn layui-btn-normal">条件查询</button>
+            <button v-on:click="commonQuery" class="layui-btn layui-btn-warm">查询所有</button>
+            <button v-on:click="convertToExcel" class="layui-btn">导出excel</button>
+            <!-- 学生信息表格  -->
+            <table class="studentInfo" id="studentInfo">
+                <thead>
+                    <tr class="tHeader">
+                        <th width="80px">ID</th>
+                        <th width="180px">学号</th>
+                        <th width="250px">姓名</th>
+                        <th width="50px">性别</th>
+                        <th width="50px">年龄</th>
+                        <th width="80px">省份</th>
+                        <th width="120px">城市</th>
+                        <th width="120px">区/县</th>
+                        <th width="180px">手机</th>
+                        <th width="250px">邮箱</th>
+                        <th width="180px">出生年月</th>
+                        <th width="200px">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, key, index) in stuDatas">
+                        <td width="80px">{{item.id}}</td>
+                        <td width="180px">{{item.studentNo}}</td>
+                        <td width="250px">{{item.name}}</td>
+                        <td width="50px" v-if="item.sex == 0">男</td>
+                        <td width="50px" v-if="item.sex == 1">女</td>
+                        <td width="50px">{{item.age}}</td>
+                        <td width="80px">{{item.province}}</td>
+                        <td width="120px">{{item.city}}</td>
+                        <td width="120px">{{item.area}}</td>
+                        <td width="180px">{{item.phone}}</td>
+                        <td width="250px">{{item.email}}</td>
+                        <td width="180px">{{item.birthday}}</td>
+                        <td width="200px">
+                            <a href="javascript:void(0);" v-on:click="updateInfo(item)">修改</a>
+                            <a href="javascript:void(0);" v-on:click="deleteInfo(item.id, index)">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div>
+                <!-- 分页vue组件 -->
+                <vue-nav :cur="cur" :total="total" :callback="callback"></vue-nav>
+            </div>
+        </div>
+        <!--sms js-->
+        <script type="text/javascript" src="../js/stuTable.js"></script>
+
+        <!-- 修改学生信息的弹出框 -->
+        <div id="updateOpen" style="display:none">
+            <table style="margin-top:20px; margin-left:23px;">
+                <tr id="update" v-show="false">
+                    <td>ID:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.id" id="id" name="id" readOnly="readOnly" disabled="disabled" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>学号:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.studentNo" id="stuNo" name="stuNo" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>姓名:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.name" id="name" name="name" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>年龄:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.age" id="age" name="age" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>性别:</td>
+                    <td>
+                        <input type="radio" v-model="stuinfo.sex" value="0" id="sex" name="sex" />男
+                        <input type="radio" v-model="stuinfo.sex" value="1" id="sex" name="sex" style="margin-left:50px;" />女
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>省份:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.province" id="province" name="province" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>城市:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.city" id="city" name="city" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>区/县:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.area" id="area" name="area" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>手机:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.phone" id="phone" name="phone" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>邮箱:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.email" id="email" name="email" />
+                    </td>
+                </tr>
+                <tr id="update">
+                    <td>出生年月日:</td>
+                    <td>
+                        <input type="text" v-model="stuinfo.birthday" id="birthday" name="birthday" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--sms js-->
+        <script type="text/javascript" src="../js/updateOpen.js"></script>
+
+        <div class="layui-footer">
+            Copyright © 2017 学校管理系统--by Unicorn
+        </div>
+    </div>
+</body>
+
+</html>

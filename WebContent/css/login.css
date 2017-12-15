@@ -1,0 +1,72 @@
+/*div*/
+div.login{
+	margin: 0 auto;
+	padding: 0;
+	
+	top: 180px;
+	width: 500px;
+	height: 246px;
+	background-color: #01AAED;
+	border-style: groove;
+	border-width: 2px;
+	
+	position: relative;
+}
+
+div.footer{
+	margin: 0 auto;
+	
+	top: 250px;
+	height: 50px;
+	position: relative;
+}
+
+/*label*/
+label.login-label{
+	left: 60px;
+	position: relative;
+}
+
+/*input*/
+input.admin-login{
+	margin-top: 20px;
+	
+	left: 80px;
+	width: 260px;
+	line-height: 30px;
+	
+	position: relative;
+	
+	font-size: large;
+}
+
+input.admin-login#name{
+	margin-top: 40px;
+}
+
+input.admin-login#code{
+	width: 130px;
+}
+
+/*button*/
+button.confirm{
+	margin-top: 20px;
+	left: 120px;
+	position: relative;
+}
+
+button.confirm:hover{
+	background-color: #FFB800;
+}
+
+button.quit{
+	margin-top: 20px;
+	left: 180px;
+	position: relative;
+}
+
+/*img*/
+img#valid-code-img{
+	left: 78px;
+	position: relative;
+}

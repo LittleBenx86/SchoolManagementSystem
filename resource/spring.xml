@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+xmlns:task="http://www.springframework.org/schema/task"
+xmlns:cache="http://www.springframework.org/schema/cache"
+xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+    http://www.springframework.org/schema/task
+	http://www.springframework.org/schema/task/spring-task-4.3.xsd
+	http://www.springframework.org/schema/cache
+	http://www.springframework.org/schema/cache/spring-cache-4.3.xsd">
+  
+	<!--   包扫描 -->
+	<context:component-scan base-package="cn.scau" />
+	<!-- 注解映射支持,替代struts2,并配置json数据的解析格式,包括request和response -->
+	<mvc:annotation-driven>
+		<!-- <mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters> -->
+	</mvc:annotation-driven>
+	<!-- 将在 SpringMVC 上下文中定义一个 – DefaultServletHttpRequestHandler，它会对进入 DispatcherServlet 
+		   的 请求进行筛查，如果发现是没有经过映射的请求，就将该请求交由 WEB 应用服务器默认的 Servlet 处理，
+		   如果不是静态资源的请求，才由 DispatcherServlet继续处理 -->
+	<mvc:default-servlet-handler/>
+	
+	<!-- 定义试图解析器 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="viewResolver">
+		<property name="prefix" value="/html/"></property><!-- 前缀解析定义,拦截解析/html目录下的html资源 -->
+		<property name="suffix" value=".html"></property><!-- 后缀解析定义.默认解析为html文件 -->
+	</bean>
+	
+	<!-- 文件解析器,用于上传文件 -->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+		<!-- 文件编码 -->
+		<property name="defaultEncoding" value="utf-8"></property>
+		<!-- 文件上传大小设置,单位:字节 10M=1024*1024*10-->
+		<property name="maxUploadSize" value="10485760"></property>
+		<!-- 上传文件的临时路径 -->
+		<property name="uploadTempDir" value="temp"></property>
+	</bean>
+	
+	<!-- 读取配置文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	<!-- spring管理hibernate的配置 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<!-- 最大活跃会话连接数量 -->
+		<property name="maxActive" value="10"></property>
+		<!-- 初始化默认连接数量 -->
+		<property name="initialSize" value="2"></property>
+		<!-- 会话连接的最小闲置数量 -->
+		<property name="minIdle" value="2"></property>
+		<!-- 会话连接的最大闲置数量 -->
+		<property name="maxIdle" value="3"></property>
+	</bean>
+	<!-- 定义hibernate的sessionFactory -->
+	<!-- sessionFactory使用的数据源为上面的数据库配置信息 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="packagesToScan" value="cn.scau.*"></property><!-- pojo对象扫描 -->
+	</bean>
+	
+	<!-- 事务tx注解使用说明 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="false"/>
+	<!-- 事务管理配置 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+</beans>

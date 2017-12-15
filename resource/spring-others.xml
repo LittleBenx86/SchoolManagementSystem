@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+xmlns:task="http://www.springframework.org/schema/task"
+xmlns:cache="http://www.springframework.org/schema/cache"
+xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+	http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+    http://www.springframework.org/schema/task
+	http://www.springframework.org/schema/task/spring-task-4.3.xsd
+	http://www.springframework.org/schema/cache
+	http://www.springframework.org/schema/cache/spring-cache-4.3.xsd">
+
+	<!-- springmvc管理的资源文件夹,设置为静态资源文件夹 -->
+	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
+	<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>
+	<mvc:resources location="/img/" mapping="/img/**"></mvc:resources>
+	<mvc:resources location="/files/" mapping="/files/**"></mvc:resources>
+	
+	<!-- mvc拦截器定义 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 拦截admin目录下的文件资源 -->
+			<mvc:mapping path="/admin/**"/>
+			<!-- 配置对应的拦截器 -->
+			<bean class="cn.scau.interceptor.AdminInterceptor">
+				<!-- 在用户没有登录,想要访问页面资源时转到登录界面,拦截器不会陷入跳转的登录页面的循环中 -->
+				<property name="set">
+					<set>
+						<value>/login.htm</value>
+					</set>
+				</property>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+</beans>
